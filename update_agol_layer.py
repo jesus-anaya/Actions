@@ -1,4 +1,5 @@
 # to run from GITHUB, REPOSITORY CALLED "ACTIVE"
+#Update portal url and web map id.
 
 from arcgis.gis import GIS
 import datetime
