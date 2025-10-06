@@ -3,7 +3,7 @@ import datetime
 import os
 
 # --- 1. Connect to ArcGIS Online ---
-gis = GIS("https://www.arcgis.com",
+gis = GIS("https://umedellin.maps.arcgis.com",
           os.getenv("AGOL_USERNAME"),
           os.getenv("AGOL_PASSWORD"))
 
