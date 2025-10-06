@@ -1,3 +1,5 @@
+# to run from GITHUB, REPOSITORY CALLED "ACTIVE"
+
 from arcgis.gis import GIS
 import datetime
 import os
@@ -29,9 +31,35 @@ csv_item = gis.content.add(
 # --- 5. Publish the CSV as a hosted feature layer ---
 flayer_item = csv_item.publish()
 
-# --- 6. Optionally, share it publicly (uncomment if needed) ---
-# flayer_item.share(everyone=True)
-
 print(f"✅ Created new hosted feature layer: {flayer_item.title}")
 print(f"🌐 Feature layer URL: {flayer_item.url}")
-print(f"⏰ Created at: {datetime.datetime.now()}")
+
+# --- 6. Share the new layer publicly ---
+flayer_item.share(everyone=True)
+print("🌍 The hosted feature layer is now PUBLIC.")
+
+# --- 7. Add the new hosted feature layer to an existing web map ---
+# Replace this with your actual Web Map item ID from AGOL
+webmap_id = "9ba7a6dcd4a743b3b4aa6b0dd4e005a1"
+
+# Retrieve the web map
+webmap_item = gis.content.get(webmap_id)
+webmap_data = webmap_item.get_data()
+
+# Define the new operational layer
+new_layer = {
+    "title": flayer_item.title,
+    "url": flayer_item.url,
+    "layerType": "ArcGISFeatureLayer",
+    "visibility": True,
+    "opacity": 1
+}
+
+# Add the layer to the map
+webmap_data["operationalLayers"].append(new_layer)
+
+# Update the web map composition
+webmap_item.update(data=webmap_data)
+
+print(f"🗺️  Added layer '{flayer_item.title}' to web map '{webmap_item.title}'")
+print(f"⏰ Completed at: {datetime.datetime.now()}")
