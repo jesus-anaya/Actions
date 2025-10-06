@@ -1,0 +1,29 @@
+name: Update AGOL Layer
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # Every 6 hours
+  workflow_dispatch:         # Allows manual trigger
+
+jobs:
+  run-update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install arcgis requests
+
+    - name: Run update script
+      env:
+        AGOL_USERNAME: ${{ secrets.AGOL_USERNAME }}
+        AGOL_PASSWORD: ${{ secrets.AGOL_PASSWORD }}
+      run: python update_agol_layer.py
